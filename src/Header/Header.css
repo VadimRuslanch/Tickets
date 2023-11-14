@@ -1,0 +1,21 @@
+.header {
+    padding: 18px 0;
+}
+
+.header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header__menu{
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
