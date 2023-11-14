@@ -1,57 +1,81 @@
-import React, { useState, useEffect } from 'react';
-import database from '../firebase';
+import React, { useState } from 'react';
+import './SearchForm.css';
+import { database } from '../firebase';
+import { ref, get } from 'firebase/database';
 
-
-const SearchForm = ({ onSearch }) => {
+const SearchForm = () => {
     const [departure, setDeparture] = useState('');
     const [destination, setDestination] = useState('');
     const [dateTime, setDateTime] = useState('');
 
-    useEffect(() => {
-        console.log(database);
-    })
+
+
+
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        // Используйте database для запроса данных согласно выбранным параметрам
-        const ticketsRef = database.ref('tickets');
-        const snapshot = await ticketsRef.once('value');
-        const tickets = snapshot.val();
-        // Фильтруйте билеты в соответствии с выбранными параметрами
-        const filteredTickets = Object.values(tickets).filter(
-            (ticket) =>
-                ticket.departure === departure &&
-                ticket.destination === destination &&
-                ticket.dateTime === dateTime
-        );
-        // Передайте результаты поиска обратно в родительский компонент
-        onSearch(filteredTickets);
+
+        const dataRef = ref(database, 'tickets');
+        const snapshot = await get(dataRef);
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            console.log(data);
+            console.log(e.target);
+        } else {
+            console.log('Данные не найдены');
+        }
+
+        // Ваша логика обработки поиска
+    };
+
+    const handleSwap = () => {
+        // Обмен данными между departure и destination
+        const tempDeparture = departure;
+        setDeparture(destination);
+        setDestination(tempDeparture);
     };
 
     return (
-        <div className='submit__container'>
-            <form onSubmit={handleSearch}>
-                {/* Добавьте поля ввода и кнопку для фильтрации билетов */}
-                <input
-                    type="text"
-                    placeholder="From"
-                    value={departure}
-                    onChange={(e) => setDeparture(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="To"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                />
-                <input
-                    type="datetime-local"
-                    value={dateTime}
-                    onChange={(e) => setDateTime(e.target.value)}
-                />
-                <button type="submit">Search</button>
-            </form>
-        </div>
+        <>
+            <div className='submit__container'>
+                <form onSubmit={handleSearch} className='form'>
+                    <div className={`input-container ${departure ? 'filled' : ''}`}>
+                        <input
+                            type="text"
+                            value={departure}
+                            onChange={(e) => setDeparture(e.target.value)}
+                            required
+                        />
+                        <label className="input-label">Откуда</label>
+                    </div>
+
+                    <button type="button" onClick={handleSwap}>
+                        Поменять
+                    </button>
+
+                    <div className={`input-container ${destination ? 'filled' : ''}`}>
+                        <input
+                            type="text"
+                            value={destination}
+                            onChange={(e) => setDestination(e.target.value)}
+                            required
+                        />
+                        <label className="input-label">Куда</label>
+                    </div>
+
+                    <div className='input-container'>
+                        <input
+                            type="date"
+                            value={dateTime}
+                            onChange={(e) => setDateTime(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button type="submit" className='input__button' >Поиск</button>
+                </form>
+            </div>
+        </>
     );
 };
 
