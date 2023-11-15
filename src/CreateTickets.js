@@ -15,7 +15,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase(firebaseApp);
 
 function getRandomCity() {
-    const cities = ["Москва", "Санкт-Петербург", "Лондон", "Париж", "Берлин", "Нью-Йорк", "Токио"];
+    const cities = ["Москва", "Стамбул", "Лондон", "Санкт-Петербург", "Берлин", "Мадрид", "Киев", "Рим", "Париж", "Минск", "Вена", "Гамбург", "Бухарест", "Варшава", "Будапешт", "Барселона", "Мюнхен", "Харьков", "Белград", "Милан", "Казань", "Прага", "София", "Нижний-Новгород", "Самара", "Уфа", "Бирмингем", "Ростов-на-Дону", "Краснодар", "Кёльн", "Воронеж", "Пермь", "Волгоград", "Одесса", "Днепр", "Неаполь", "Донецк", "Саратов", "Марсель", "Амстердам", "Турин", "Загреб", "Лидс", "Копенгаген", "Валенсия", "Стокгольм", "Краков", "Франкфурт-на-Майне", "Львов", "Запорожье"];
     return cities[Math.floor(Math.random() * cities.length)];
 }
 
@@ -23,7 +23,7 @@ function getRandomDate() {
     const year = 2023;
     const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
     const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
-    return `${year}.${month}.${day}`;
+    return `${year}-${month}-${day}`;
 }
 
 function getRandomTime() {
@@ -39,8 +39,7 @@ function generateRandomTicket(id) {
         "arrival": getRandomCity(),
         "departure_date": getRandomDate(),
         "departure_time": getRandomTime(),
-        "arrival_date": getRandomDate(),
-        "arrival_time": getRandomTime()
+
     };
 }
 
