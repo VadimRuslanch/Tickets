@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import './SearchForm.css';
-import { database } from '../firebase';
+import { database } from '../../firebase';
 import { ref, get } from 'firebase/database';
-import { insertTicketsIntoDatabase, generateRandomTickets } from '../CreateTickets';
+import TicketsList from '../TicketsList/TicketsList'
 
 const SearchForm = () => {
 
-    // const tick = generateRandomTickets(50);
-    // insertTicketsIntoDatabase(tick);
 
 
 
     const [departure, setDeparture] = useState(localStorage.getItem('departure') || '');
-    const [destination, setDestination] = useState(localStorage.getItem('destination') || '');
+    const [arrival, setArrival] = useState(localStorage.getItem('arrival') || '');
     const [date, setDate] = useState(localStorage.getItem('date') || '');
     const [time, setTime] = useState(localStorage.getItem('time') || '');
 
+    const [filterTick, setFilterTick] = useState([])
+
 
     useEffect(() => {
-        // Сохраняем значения в localStorage при изменении состояния
         localStorage.setItem('departure', departure);
-        localStorage.setItem('destination', destination);
+        localStorage.setItem('arrival', arrival);
         localStorage.setItem('date', date);
-        localStorage.setItem('time', date);
-    }, [departure, destination, date]);
+        localStorage.setItem('time', time);
+    }, [departure, arrival, date, time]);
 
 
     const handleSearch = async (e) => {
@@ -31,25 +30,31 @@ const SearchForm = () => {
 
         const dataRef = ref(database, 'tickets');
 
-        // Получаем всю базу данных
         const snapshot = await get(dataRef);
 
-        // Получаем данные из снимка
         const tickets = snapshot.val();
 
-        // Фильтруем билеты по городу отправления, городу прибытия и времени с датой
+        // console.log(tickets);
 
-        // Выводим результат
-        console.log('Найденные билеты:', tickets);
 
-        // Ваша логика обработки поиска
+        const filteredTickets = Object.values(tickets).filter(ticket => {
+            return (
+                ticket.departure.toLowerCase().includes(departure.toLowerCase()) ||
+                ticket.arrival.toLowerCase().includes(arrival.toLowerCase()) ||
+                ticket.departure_date.includes(date) ||
+                ticket.departure_time.includes(time)
+            );
+        });
+        // console.log(filteredTickets);
+        setFilterTick(filteredTickets);
+        // console.log('Найденные билеты:', filteredTickets);
     };
 
     const handleSwap = () => {
-        // Обмен данными между departure и destination
+        // Обмен данными между departure и arrival
         const tempDeparture = departure;
-        setDeparture(destination);
-        setDestination(tempDeparture);
+        setDeparture(arrival);
+        setArrival(tempDeparture);
     };
 
     return (
@@ -71,11 +76,11 @@ const SearchForm = () => {
                         Поменять
                     </button>
 
-                    <div className={`input-container ${destination ? 'filled' : ''}`}>
+                    <div className={`input-container ${arrival ? 'filled' : ''}`}>
                         <input
                             type="text"
-                            value={destination}
-                            onChange={(e) => setDestination(e.target.value)}
+                            value={arrival}
+                            onChange={(e) => setArrival(e.target.value)}
                             required
                         />
                         <label className="input-label">Куда</label>
@@ -102,6 +107,9 @@ const SearchForm = () => {
                     <button type="submit" className='input__button'>Поиск</button>
                 </form>
             </div>
+            <TicketsList
+                tickets={filterTick}
+            />
         </>
     );
 };

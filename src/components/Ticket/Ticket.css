@@ -1,0 +1,58 @@
+.train-ticket {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.train-ticket__info {
+    flex-grow: 2;
+}
+
+.train-ticket__schedule {
+    display: flex;
+    align-items: center;
+}
+
+.train-ticket__date {
+    margin-right: 5px;
+}
+
+.train-ticket__time {
+    font-weight: bold;
+}
+
+.train-ticket__station {
+    margin-top: 5px;
+}
+
+.train-ticket__details {
+    text-align: center;
+}
+
+.train-ticket__class {
+    margin-bottom: 5px;
+}
+
+.train-ticket__class-type {
+    margin-right: 5px;
+}
+
+.train-ticket__actions {
+    text-align: right;
+}
+
+.train-ticket__select {
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.train-ticket__select:hover {
+    background-color: #0056b3;
+}
