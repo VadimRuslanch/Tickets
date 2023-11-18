@@ -1,58 +1,73 @@
-.train-ticket {
+.ticket {
     border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px;
+    padding: 28px 32px 32px 32px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px -4px hsla(60, 4%, 60%, .35), 0 0 2px hsla(60, 4%, 60%, .3);
+    border-radius: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.train-ticket__info {
-    flex-grow: 2;
+.ticket__details {
+    display: flex;
+    flex-direction: column;
 }
 
-.train-ticket__schedule {
+.ticket__dateTime {
     display: flex;
+}
+
+.ticket__date {
+    margin-left: 5px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #9d9b98;
+}
+
+.ticket__time {
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 26px
+}
+
+.ticket__departure {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.ticket__sale {
+    border-left: 1px solid #e8e7e4;
+    padding-left: 32px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.train-ticket__date {
-    margin-right: 5px;
-}
-
-.train-ticket__time {
-    font-weight: bold;
-}
-
-.train-ticket__station {
-    margin-top: 5px;
-}
-
-.train-ticket__details {
-    text-align: center;
-}
-
-.train-ticket__class {
+.ticket__price {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 26px;
     margin-bottom: 5px;
 }
 
-.train-ticket__class-type {
-    margin-right: 5px;
+.ticket__button {
+    width: 172px;
+    height: 32px;
+    padding: 0;
+    background-color: #ffe356;
+    border-radius: 8px;
+    /*bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    /* transition: background-color .15s linear;
+    z-index: -1; */
 }
 
-.train-ticket__actions {
-    text-align: right;
-}
-
-.train-ticket__select {
-    padding: 5px 10px;
-    background-color: #007BFF;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    display: inline-block;
-}
-
-.train-ticket__select:hover {
-    background-color: #0056b3;
+.ticket__button:hover {
+    background-color: #ffd700;
 }

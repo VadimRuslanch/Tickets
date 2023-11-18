@@ -1,8 +1,11 @@
-.ticketList {
+.tickets {
+    margin-top: 25px;
+}
+
+.tickets__list {
+    margin-top: 25px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
     gap: 10px;
     max-height: 130px;
 }
-
-

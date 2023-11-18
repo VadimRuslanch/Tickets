@@ -1,7 +1,13 @@
 import SearchForm from "../SearchForm/SearchForm";
 
 export default function Main() {
-return(
-    <SearchForm/>
-)
+
+
+    return (
+        <main className="main">
+            <div className="main__container">
+                <SearchForm />
+            </div>
+        </main>
+    )
 }

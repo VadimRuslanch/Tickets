@@ -1,35 +1,31 @@
 import './Ticket.css'
+import { transformDate } from '../../utils/utils';
 
-const Ticket = () => {
+const Ticket = ({ tickets }) => {
+
+    const date = transformDate(tickets.departure_date);
     return (
-        <div className="train-ticket">
-            <div className="train-ticket__info">
-                <div className="train-ticket__schedule">
-                    <div className="train-ticket__date">16 нояб</div>
-                    <span className="train-ticket__time">23:39</span>
+        <div className='ticket'>
+            <div className='ticket__details'>
+                <div className='ticket__dateTime'>
+
+                    <p className='ticket__time'>{tickets.departure_time}</p>
+                    <p className='ticket__date'>{date}</p>
                 </div>
-                <span className="train-ticket__station">Ростов-Главный</span>
-                <div className="train-ticket__schedule">
-                    <div className="train-ticket__date">17 нояб</div>
-                    <span className="train-ticket__time">23:09</span>
-                </div>
-                <span className="train-ticket__station">Восточный вокзал</span>
+                <p className='ticket__location'>{tickets.departure}</p>
             </div>
-            <div className="train-ticket__details">
-                <div className="train-ticket__duration">23 ч 30 мин</div>
-                <div className="train-ticket__className">
-                    <span className="train-ticket__className-type">купе</span>
-                    <span className="train-ticket__className-seats">3</span>
-                </div>
-                <div className="train-ticket__price">от&nbsp;4 997 ₽</div>
+            <div className='ticket__details'>
+
+                <p className='ticket__time'><span className='text-13'>Время пути: </span>00:00</p>
+                <p className='ticket__location'>{tickets.arrival}</p>
+
             </div>
-            <div className="train-ticket__actions">
-                <span className="train-ticket__price">от&nbsp;4 997 ₽</span>
-                <a className="train-ticket__select" href="/trains/rostov-on-don--moscow/?direction=backward&amp;forwardSegmentId=9612913_9879173_1700167140&amp;returnWhen=2023-11-17&amp;when=2023-11-16">
-                    <span className="train-ticket__select-text">Выбрать поезд туда</span>
-                </a>
+            <div className='ticket__sale'>
+                <p className='ticket__price'>от&nbsp;4997₽ </p>
+                <button className='ticket__button'>Купить билет</button>
             </div>
         </div>
+
     );
 };
 
