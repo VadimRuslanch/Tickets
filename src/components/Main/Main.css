@@ -1,9 +1,0 @@
-.main {
-    flex-grow: 1;
-    padding-top: 32px;
-}
-
-.main__container{
-    display: flex;
-    flex-direction: column;
-}
