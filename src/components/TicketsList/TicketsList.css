@@ -1,0 +1,10 @@
+.tickets {
+    margin-top: 25px;
+}
+
+.tickets__list {
+    margin-top: 25px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 100%, 1fr);
+}
