@@ -67,8 +67,8 @@ const SearchForm = ({ allTickets }) => {
     useEffect(() => {
         // Сохранение данных в localStorage при изменении formValue
         localStorage.setItem('searchFormValue', JSON.stringify(formValue));
-        handleFilter(allTickets);
-    }, [formValue, allTickets]);
+        // handleFilter(allTickets);
+    }, [formValue]);
 
     return (
         <>
