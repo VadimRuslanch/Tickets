@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 
 const TicketsList = ({ tickets, isCoincidenceTickets, searchPerformed }) => {
     const [text, setText] = useState('');
-
     useEffect(() => {
         if (searchPerformed) {
             if (isCoincidenceTickets) {

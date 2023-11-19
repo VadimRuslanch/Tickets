@@ -1,150 +1,129 @@
 import React, { useState, useEffect } from 'react';
 import './SearchForm.css';
-import { database } from '../../firebase';
-import { ref, get } from 'firebase/database';
 import TicketsList from '../TicketsList/TicketsList';
 import Loader from '../Loader/Loader';
+import { filteredTicketsOne, filteredTicketsTwo } from '../../utils/utils';
 
-const SearchForm = () => {
-    const [departure, setDeparture] = useState(localStorage.getItem('departure') || '');
-    const [arrival, setArrival] = useState(localStorage.getItem('arrival') || '');
-    const [date, setDate] = useState(localStorage.getItem('date') || '');
-    const [time, setTime] = useState(localStorage.getItem('time') || '');
+const SearchForm = ({ allTickets }) => {
+    const initialFormValue = {
+        departure: '',
+        arrival: '',
+        date: '',
+        time: '',
+    };
 
-    const [isLoader, setIsLoader] = useState(false);
+    // Получение данных из localStorage при первом рендере
+    const storedFormValue = JSON.parse(localStorage.getItem('searchFormValue')) || initialFormValue;
+    const [formValue, setFormValue] = useState(storedFormValue);
 
-    const [allTickets, setAllTickets] = useState([]);
-    const [filterTick, setFilterTick] = useState([]);
     const [isCoincidenceTickets, setIsCoincidence] = useState(false);
-
-    useEffect(() => {
-        localStorage.setItem('departure', departure);
-        localStorage.setItem('arrival', arrival);
-        localStorage.setItem('date', date);
-        localStorage.setItem('time', time);
-    }, [departure, arrival, date, time]);
+    const [isLoader, setIsLoader] = useState(false);
+    const [filterTick, setFilterTick] = useState([]);
 
     const handleFilter = (tickets) => {
-        const oneTick = filteredTicketsOne(tickets);
+        const oneTick = filteredTicketsOne(tickets, formValue.departure, formValue.arrival, formValue.date, formValue.time);
         if (oneTick.length !== 0) {
             setIsCoincidence(true);
             setFilterTick(oneTick);
-        } else {
-            const twoTick = filteredTicketsTwo(tickets);
+        }
+        else {
+            const twoTick = filteredTicketsTwo(tickets, formValue.departure, formValue.arrival);
             setIsCoincidence(false);
             setFilterTick(twoTick);
-        };
-    }
-
-
-    const filteredTicketsOne = (allTickets) => {
-        return Object.values(allTickets).filter((ticket) => {
-            return (
-                ticket.departure.toLowerCase().includes(departure.toLowerCase()) &&
-                ticket.arrival.toLowerCase().includes(arrival.toLowerCase()) &&
-                ticket.departure_date.includes(date) &&
-                ticket.departure_time.includes(time)
-            )
-        })
-    }
-
-
-    const filteredTicketsTwo = (allTickets) => {
-        return Object.values(allTickets).filter((ticket) => {
-            return (
-                ticket.departure.toLowerCase().includes(departure.toLowerCase()) &&
-                ticket.arrival.toLowerCase().includes(arrival.toLowerCase())
-            );
-        });
-    }
-
-
-    const getTickets = async () => {
-
-        // Получаем список билетов с БД
-        const dataRef = ref(database, 'tickets');
-        const snapshot = await get(dataRef);
-        const tickets = snapshot.val();
-
-        // Записываем в стейт
-        setAllTickets(tickets);
-        handleFilter(tickets);
+        }
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoader(true);
         try {
-            if (allTickets.length === 0) {
-                await getTickets();
-            } else {
-                handleFilter(allTickets);
-            }
+            await handleFilter(allTickets);
         } catch (error) {
-            // Обработка ошибок, если необходимо
             console.error(error);
         } finally {
-            setIsLoader(false);
+
+            setTimeout(() => {
+                setIsLoader(false);
+            }, 1000);
         }
     };
 
-    const handleSwap = () => {
-        // Обмен данными между departure и arrival
-        const tempDeparture = departure;
-        setDeparture(arrival);
-        setArrival(tempDeparture);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValue({
+            ...formValue,
+            [name]: value,
+        });
     };
+
+    const handleSwap = () => {
+        setFormValue({
+            ...formValue,
+            departure: formValue.arrival,
+            arrival: formValue.departure,
+        });
+    };
+
+    useEffect(() => {
+        // Сохранение данных в localStorage при изменении formValue
+        localStorage.setItem('searchFormValue', JSON.stringify(formValue));
+        handleFilter(allTickets);
+    }, [formValue, allTickets]);
 
     return (
         <>
             <div className='submit__container'>
                 <form onSubmit={handleSubmit} className='form'>
-                    <div className={`input-container ${departure ? 'filled' : ''}`}>
+
+                    <div className={`input-container ${formValue.departure ? 'filled' : ''}`}>
                         <input
-                            type="text"
-                            value={departure}
-                            onChange={(e) => {
-                                setDeparture(e.target.value);
-                            }}
+                            type='text'
+                            value={formValue.departure}
+                            name='departure'
+                            onChange={handleChange}
                             required
                         />
-                        <label className="input-label">Откуда</label>
+                        <label className='input-label'>Откуда</label>
                     </div>
 
-                    <button className='form__button' type="button" onClick={handleSwap}>
+                    <button className='form__button' type='button' onClick={handleSwap}>
                         Поменять
                     </button>
 
-                    <div className={`input-container ${arrival ? 'filled' : ''}`}>
+                    <div className={`input-container ${formValue.arrival ? 'filled' : ''}`}>
                         <input
-                            type="text"
-                            value={arrival}
-                            onChange={(e) => setArrival(e.target.value)}
+                            type='text'
+                            value={formValue.arrival}
+                            name='arrival'
+                            onChange={handleChange}
                             required
                         />
-                        <label className="input-label">Куда</label>
+                        <label className='input-label'>Куда</label>
                     </div>
 
                     <div className='input-container'>
                         <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
+                            type='date'
+                            value={formValue.date}
+                            name='date'
+                            onChange={handleChange}
                             required
                         />
                     </div>
 
                     <div className='input-container'>
                         <input
-                            type="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
+                            type='time'
+                            value={formValue.time}
+                            name='time'
+                            onChange={handleChange}
                             required
                         />
                     </div>
 
-                    <button type="submit" className='form__button'>Поиск</button>
+                    <button type='submit' className='form__button'>
+                        Поиск
+                    </button>
                 </form>
             </div>
             <TicketsList

@@ -15,4 +15,24 @@ const transformDate = (inputDate) => {
 }
 
 
-export { transformDate };
+const filteredTicketsOne = (allTickets, departure, arrival, date, time) => {
+    return Object.values(allTickets).filter((ticket) => {
+        return (
+            ticket.departure.toLowerCase().includes(departure.toLowerCase()) &&
+            ticket.arrival.toLowerCase().includes(arrival.toLowerCase()) &&
+            ticket.departure_date.includes(date) &&
+            ticket.departure_time.includes(time)
+        )
+    })
+}
+
+const filteredTicketsTwo = (allTickets, departure, arrival) => {
+    return Object.values(allTickets).filter((ticket) => {
+        return (
+            ticket.departure.toLowerCase().includes(departure.toLowerCase()) &&
+            ticket.arrival.toLowerCase().includes(arrival.toLowerCase())
+        );
+    });
+}
+
+export { transformDate, filteredTicketsOne, filteredTicketsTwo };

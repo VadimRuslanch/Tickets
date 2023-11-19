@@ -8,18 +8,21 @@
     justify-content: space-between;
 }
 
-.header__logo{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.header__menu{
+.header__menu {
     display: flex;
     flex-direction: row;
     gap: 15px;
 }
 
-.header__menu-link{
+.header__menuList {
+    display: flex;
+    flex-direction: row;
+}
+
+.header__menu-link {
     cursor: pointer;
+}
+
+.header__menuList img {
+    margin-right: 10px;
 }

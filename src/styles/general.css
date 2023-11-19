@@ -57,7 +57,6 @@ p {
 }
 
 .text-16,
-.text-14,
 .text-13 {
   margin: 0;
   color: var(--text-black);
@@ -77,4 +76,10 @@ p {
 button{
   border: none;
   cursor: pointer;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
